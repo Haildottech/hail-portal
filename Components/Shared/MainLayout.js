@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { UploadOutlined, CloseCircleOutlined, FileDoneOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
