@@ -23,7 +23,7 @@ const App = ({children}) => {
         <div className="demo-logo-vertical" />
         {/* <h5 className='px-4 mt-4 mb-5' style={{color:'white'}}>Welcome</h5> */}
         <div className='p-4' style={{height:83}}>
-          <img src={`/images/${company}.PNG`} width={150} />
+          <img src={`/images/${company}.png`} width={150} />
         </div>
         <Menu
           theme="dark"
