@@ -70,3 +70,21 @@
   transition-duration: 300ms;
   background-color: rgba(119, 154, 201, 0.322);
 }
+
+.tableFixHead thead th {
+  transition-duration: 300ms;
+  font-size: 12px;
+  position: sticky;
+  top: 0;
+  background-color: rgb(243, 243, 243);
+  z-index: 1;
+}
+.tableFixHead thead{
+  border: 1px solid rgb(232, 232, 232);
+  border-radius: 25px!important;
+  color: grey;
+}
+.tableData{
+  font-size: 12px;
+  
+}

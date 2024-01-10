@@ -12,11 +12,10 @@ export default function App({ Component, pageProps }) {
 
   return (
   <div className={`${inter.className}`}>
-    {(router.pathname =='/login' || router.pathname =='/')?
-      <Component {...pageProps} />:
-      <MainLayout>
-        <Component {...pageProps} />
-      </MainLayout>
+    {(router.pathname =='/login' || router.pathname =='/') ? <Component {...pageProps} /> 
+      : <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
     }
   </div>
   )

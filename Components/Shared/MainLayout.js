@@ -1,18 +1,51 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { UploadOutlined, CloseCircleOutlined, FileDoneOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, Select } from 'antd';
 const { Header, Content, Sider } = Layout;
 import Router from 'next/router';
+import Cookies from 'js-cookie';
+import {options} from "@/constants/data";
 
-const App = ({children}) => {
+const App = ({ children }) => {
+  const { token: { colorBgContainer } } = theme.useToken();
+  const [company, setCompany] = useState("2");
+  const [isLoading,setIsLoading] = useState(false);
 
-  const {token:{colorBgContainer}} = theme.useToken();
-  const [ company, setCompany ] = useState("3")
+  const items = [
+    {
+      key: 1,
+      icon: <UploadOutlined />,
+      label: `Latest Releases`,
+    },
+    {
+      key: 2,
+      icon: <FileDoneOutlined />,
+      label: `Amends Reports`,
+    },
+    {
+      key: 3,
+      icon: <CloseCircleOutlined />,
+      label: `Failed Reports`,
+    },
+  ];
+
+  useEffect(() => {
+    console.log("company changed", company);
+  }, [company]);
+
+  const handleCompanyChange = useCallback(async (value) => {
+    Cookies.set("company", value, { expires: 1000000000 });
+    setCompany(value);
+  }, [setCompany]);
+  
 
   return (
     <Layout>
-      <Sider style={{height:'100vh'}} breakpoint="lg" collapsedWidth="0"
+      <Sider
+        style={{ height: '100vh' }}
+        breakpoint="lg"
+        collapsedWidth="0"
         onBreakpoint={(broken) => {
           console.log(broken);
         }}
@@ -21,60 +54,42 @@ const App = ({children}) => {
         }}
       >
         <div className="demo-logo-vertical" />
-        {/* <h5 className='px-4 mt-4 mb-5' style={{color:'white'}}>Welcome</h5> */}
-        <div className='p-4' style={{height:83}}>
-          <img src={`/images/${company}.png`} width={150} />
+        <div className='p-4' style={{ height: 83 }}>
+          <img src={`/images/${company}.png`} width={150} alt={`Company Logo - ${company}`} />
         </div>
         <Menu
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['1']}
-          onSelect={(e)=>{
-            if(e.key==1){
+          onSelect={(e) => {
+            if (e.key === '1') {
               Router.push("/latestReleases");
-            } else if(e.key==2) {
+            } else if (e.key === '2') {
               Router.push("/amends");
-            } else if(e.key==3) {
+            } else if (e.key === '3') {
               Router.push("/failedReports");
             }
           }}
-          items={[
-              {
-                  key: 1,
-                  icon: <UploadOutlined/>,
-                  label: `Latest Releases`,
-              },
-              {
-                  key: 2,
-                  icon: <FileDoneOutlined />,
-                  label: `Amends Reports`,
-              },
-              {
-                  key: 3,
-                  icon: <CloseCircleOutlined />,
-                  label: `Failed Reports`,
-              },
-          ]}
+          items={items}
         />
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
           <div className='px-4'>
-          <Select style={{width: 155, opacity:0.7}} value={company} onChange={(e)=>setCompany(e)}
-            options={[
-              {label:"Dayfresh", value:"1"},
-              {label:"Indigo Textiles", value:"2"},
-              {label:"Akhatar Textiles", value:"3"},
-            ]} 
-          />
+            <Select
+              style={{ width: 155, opacity: 0.7 }}
+              value={company}
+              onChange={handleCompanyChange}
+              options={options}
+            />
           </div>
-          </Header>
+        </Header>
         <Content
           style={{
             margin: '24px 16px 0',
           }}
         >
-          <div
+          {!isLoading && <div
             style={{
               padding: 24,
               minHeight: "88vh",
@@ -82,10 +97,11 @@ const App = ({children}) => {
             }}
           >
             {children}
-          </div>
+          </div>}
         </Content>
       </Layout>
     </Layout>
   );
 };
+
 export default App;
