@@ -86,5 +86,13 @@
 }
 .tableData{
   font-size: 12px;
-  
+}
+.searchInput{
+  border: 1px solid gray;
+  outline-color: none !important;
+  box-shadow: none !important;
+}
+.searchInput:focus{
+  border: none;
+  border-color: none;
 }

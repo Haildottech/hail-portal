@@ -4,13 +4,17 @@ import { UploadOutlined, CloseCircleOutlined, FileDoneOutlined } from '@ant-desi
 import { Layout, Menu, theme, Select } from 'antd';
 const { Header, Content, Sider } = Layout;
 import Router from 'next/router';
-import Cookies from 'js-cookie';
+import {useDispatch} from "react-redux"
 import {options} from "@/constants/data";
+import { addCompany } from '@/redux/reducer/companySlice';
+import {useSelector} from "react-redux"
 
 const App = ({ children }) => {
+  const dispatch = useDispatch();
   const { token: { colorBgContainer } } = theme.useToken();
-  const [company, setCompany] = useState("2");
+  const [company, setCompany] = useState("");
   const [isLoading,setIsLoading] = useState(false);
+  const companyId = useSelector(state=>state.value);
 
   const items = [
     {
@@ -30,16 +34,11 @@ const App = ({ children }) => {
     },
   ];
 
-  useEffect(() => {
-    console.log("company changed", company);
-  }, [company]);
-
-  const handleCompanyChange = useCallback(async (value) => {
-    Cookies.set("company", value, { expires: 1000000000 });
-    setCompany(value);
-  }, [setCompany]);
+  const handleCompanyChange = (value) => {
+    dispatch(addCompany(value))
+    setCompany(value)
+  };
   
-
   return (
     <Layout>
       <Sider
@@ -55,7 +54,7 @@ const App = ({ children }) => {
       >
         <div className="demo-logo-vertical" />
         <div className='p-4' style={{ height: 83 }}>
-          <img src={`/images/${company}.png`} width={150} alt={`Company Logo - ${company}`} />
+          <img src={`/images/${companyId}.png`} width={150} alt={`Company Logo - ${companyId}`} />
         </div>
         <Menu
           theme="dark"
