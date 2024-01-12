@@ -3,7 +3,7 @@ import {Row,Col,Table} from "react-bootstrap";
 import moment from 'moment';
 import Pagination from '@/Components/Shared/Pagination';
 
-const Damco = ({data}) => {
+const DamcoFailReports = ({data}) => {
     const [damcoData,setDamcoData] = useState([]);
     //search states
     const [searchData, setSearchData] = useState(data);
@@ -58,6 +58,7 @@ const Damco = ({data}) => {
                 <Table className='tableFixHead'>
                     <thead>
                         <tr>
+                            <th>id</th>
                             <th>Po number</th>
                             <th>Plan hod</th>
                             <th>Country</th>
@@ -74,6 +75,7 @@ const Damco = ({data}) => {
                         {currentRecords.map((x,index)=>{
                             return (
                                 <tr key={index} className='tableData'>
+                                    <td>{x.id}</td>
                                     <td>{x.po_number}</td>
                                     <td>{moment(x.plan_hod).format("DD-MM-YYYY")}</td>
                                     <td>{x.country}</td>
@@ -83,7 +85,7 @@ const Damco = ({data}) => {
                                     <td>{x.carton_cbm}</td>
                                     <td>{x.gross_weight}</td>
                                     <td>{x.booking_id}</td>
-                                    <td className='text-success fw-bold'>{x.booking_status}</td>
+                                    <td className='text-danger fw-bold'>{x.booking_status}</td>
                                 </tr>
                             )
                         })}
@@ -102,4 +104,4 @@ const Damco = ({data}) => {
   )
 }
 
-export default Damco
+export default DamcoFailReports

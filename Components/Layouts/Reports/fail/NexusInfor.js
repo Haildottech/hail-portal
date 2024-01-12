@@ -3,7 +3,7 @@ import { Row, Col, Table } from "react-bootstrap"
 import moment from 'moment'
 import Pagination from '@/Components/Shared/Pagination';
 
-const NexusInfor = ({ data }) => {
+const NexusFailedReports = ({ data }) => {
 
     const [nexusData,setNexusData] = useState([])
     const [searchData, setSearchData] = useState(data);
@@ -74,7 +74,7 @@ const NexusInfor = ({ data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {currentRecords.map((x, index) => {
+                        {currentRecords.length > 0 ? currentRecords.map((x, index) => {
                             return (
                                 <tr key={index} className='tableData'>
                                     <td>{index + 1}</td>
@@ -94,7 +94,9 @@ const NexusInfor = ({ data }) => {
                                     <td>{x.units}</td>
                                 </tr>
                             )
-                        })}
+                        }) 
+                        : "No Failed Reports found"
+                        }
                     </tbody>
                 </Table>
             </div>
@@ -102,7 +104,7 @@ const NexusInfor = ({ data }) => {
                 <Col md={4}></Col>
                 <Col md={8}>
                     <div className='d-flex justify-content-end mt-5'>
-                        <Pagination noOfPages={noOfPages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+                        {currentRecords.length > 0 && <Pagination noOfPages={noOfPages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>}
                     </div>
                 </Col>
             </Row>
@@ -110,4 +112,4 @@ const NexusInfor = ({ data }) => {
     )
 }
 
-export default NexusInfor
+export default NexusFailedReports

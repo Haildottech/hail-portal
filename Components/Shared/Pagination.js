@@ -1,7 +1,7 @@
 import { LeftOutlined, RightOutlined, DoubleLeftOutlined, DoubleRightOutlined } from "@ant-design/icons";
 
 const Pagination = ({ noOfPages, currentPage, setCurrentPage }) => {
-    const maxVisiblePages = 10;
+    const maxVisiblePages = 2;
 
     const incrementPage = (incrementBy) => {
         if (currentPage + incrementBy <= noOfPages) {
