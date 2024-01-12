@@ -1,19 +1,33 @@
-import React,{useState,useEffect} from 'react'
-import {Row,Col,Table} from "react-bootstrap"
-import moment from 'moment'
+import React,{useState,useEffect} from 'react';
+import {Row,Col,Table} from "react-bootstrap";
+import moment from 'moment';
+import Pagination from '@/Components/Shared/Pagination';
 
 const Damco = ({data}) => {
+    const [damcoData,setDamcoData] = useState([]);
+    //search states
     const [searchData, setSearchData] = useState(data);
     const [query, setQuery] = useState("");
     const keys = ["po_number"];
+    //pagination 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [recordsPerPage] = useState(20);
+    const indexOfLast = currentPage * recordsPerPage;
+    const indexOfFirst = indexOfLast - recordsPerPage;
+    const currentRecords = damcoData ? damcoData.slice(indexOfFirst, indexOfLast) : null;
+    const noOfPages = damcoData ? Math.ceil(damcoData.length / recordsPerPage) : null;
 
     useEffect(() => {
+        setDamcoData(data)
         setSearchData(data);
-    }, [data]);
+    },[]);
 
     useEffect(() => {
-        setSearchData(handleSearch(data));
-    }, [query, data]);
+        if(searchData){
+            const search = handleSearch(searchData);
+            setDamcoData(search);
+        }
+    }, [query, searchData]);
 
     const handleSearch = (data) => {
         return data.filter((item) => {
@@ -57,7 +71,7 @@ const Damco = ({data}) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {searchData.map((x,index)=>{
+                        {currentRecords.map((x,index)=>{
                             return (
                                 <tr key={index} className='tableData'>
                                     <td>{x.po_number}</td>
@@ -76,6 +90,14 @@ const Damco = ({data}) => {
                     </tbody>
                 </Table>
             </div>
+            <Row>
+                <Col md={4}></Col>
+                <Col md={8}>
+                    <div className='d-flex justify-content-end my-3'>
+                        <Pagination noOfPages={noOfPages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+                    </div>
+                </Col>
+            </Row>
         </div>
   )
 }

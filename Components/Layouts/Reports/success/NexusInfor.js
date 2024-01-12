@@ -1,32 +1,43 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Table } from "react-bootstrap"
 import moment from 'moment'
+import Pagination from '@/Components/Shared/Pagination';
 
 const NexusInfor = ({ data }) => {
 
+    const [nexusData,setNexusData] = useState([])
     const [searchData, setSearchData] = useState(data);
     const [query, setQuery] = useState("");
     const keys = ["po_number"];
 
-    useEffect(() => {
-        setSearchData(data);
-    }, [data]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [recordsPerPage] = useState(20);
+    const indexOfLast = currentPage * recordsPerPage;
+    const indexOfFirst = indexOfLast - recordsPerPage;
+    const currentRecords = nexusData ? nexusData.slice(indexOfFirst, indexOfLast) : null;
+    const noOfPages = nexusData ? Math.ceil(nexusData.length / recordsPerPage) : null;
 
     useEffect(() => {
-        setSearchData(handleSearch(data));
-    }, [query, data]);
+        setNexusData(data)
+        setSearchData(data);
+    },[]);
+
+    useEffect(() => {
+        if(searchData){
+            const search = handleSearch(searchData);
+            setNexusData(search)
+        }
+    }, [query, searchData]);
 
     const handleSearch = (data) => {
         return data.filter((item) => {
             return keys.some(key => {
                 const value = item[key];
-
                 if (typeof value === 'string') {
                     return value.toLowerCase().includes(query.toLowerCase());
                 } else if (typeof value === 'number' && !isNaN(value)) {
                     return value.toString().includes(query);
                 }
-
                 return false;
             });
         });
@@ -63,7 +74,7 @@ const NexusInfor = ({ data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {searchData.map((x, index) => {
+                        {currentRecords.map((x, index) => {
                             return (
                                 <tr key={index} className='tableData'>
                                     <td>{index + 1}</td>
@@ -87,6 +98,14 @@ const NexusInfor = ({ data }) => {
                     </tbody>
                 </Table>
             </div>
+            <Row>
+                <Col md={4}></Col>
+                <Col md={8}>
+                    <div className='d-flex justify-content-end my-3'>
+                        <Pagination noOfPages={noOfPages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+                    </div>
+                </Col>
+            </Row>
         </div>
     )
 }

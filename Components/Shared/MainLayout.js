@@ -53,7 +53,7 @@ const App = ({ children }) => {
         }}
       >
         <div className="demo-logo-vertical" />
-        <div className='p-4' style={{ height: 83 }}>
+        <div className='p-4 mb-2' style={{ height: 83 }}>
           <img src={`/images/${companyId}.png`} width={150} alt={`Company Logo - ${companyId}`} />
         </div>
         <Menu
