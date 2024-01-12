@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import { useSelector } from "react-redux";
 import Loader from '@/Components/Shared/Loader';
 
-const amends = () => {
+const Amends = () => {
 
   const [damcoData, setDamcoData] = useState([]);
   const [nexusdata, setNexusData] = useState([]);
@@ -65,4 +65,4 @@ const amends = () => {
   )
 };
 
-export default amends;
+export default Amends;
