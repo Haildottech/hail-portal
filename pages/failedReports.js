@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Cookies from 'js-cookie';
 import { useSelector } from "react-redux";
 import Loader from '@/Components/Shared/Loader';
 import DamcoFailReports from '@/Components/Layouts/Reports/fail/Damco';

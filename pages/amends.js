@@ -3,7 +3,6 @@ import Damco from '@/Components/Layouts/Reports/success/Damco';
 import NexusInfor from '@/Components/Layouts/Reports/success/NexusInfor';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Cookies from 'js-cookie';
 import { useSelector } from "react-redux";
 import Loader from '@/Components/Shared/Loader';
 
@@ -13,7 +12,6 @@ const Amends = () => {
   const [nexusdata, setNexusData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const companyId = useSelector(state => state.value)
-  console.log(companyId)
 
   useEffect(() => {
     if (companyId == 1) {
@@ -26,7 +24,6 @@ const Amends = () => {
   const handleDamcoReports = async () => {
     try {
       setIsLoading(true)
-      console.log("damco data fetching");
       const response = await axios.get(process.env.NEXT_PUBLIC_DAMCO_SUCCESS_REPORTS);
       setDamcoData(response.data.message);
     } catch (error) {
@@ -39,7 +36,6 @@ const Amends = () => {
   const handleNexusReports = async () => {
     try {
       setIsLoading(true)
-      console.log("Nexus data fetching");
       const response = await axios.get(process.env.NEXT_PUBLIC_NEXUS_INFOR_SUCCESS_REPORTS);
       setNexusData(response.data.message);
     } catch (error) {

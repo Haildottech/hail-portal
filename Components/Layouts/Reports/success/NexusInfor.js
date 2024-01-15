@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Table } from "react-bootstrap"
 import moment from 'moment'
+import {Input } from 'antd';
 import Pagination from '@/Components/Shared/Pagination';
 
 const NexusInfor = ({ data }) => {
@@ -11,7 +12,7 @@ const NexusInfor = ({ data }) => {
     const keys = ["po_number"];
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [recordsPerPage] = useState(20);
+    const [recordsPerPage] = useState(50);
     const indexOfLast = currentPage * recordsPerPage;
     const indexOfFirst = indexOfLast - recordsPerPage;
     const currentRecords = nexusData ? nexusData.slice(indexOfFirst, indexOfLast) : null;
@@ -48,15 +49,18 @@ const NexusInfor = ({ data }) => {
             <Row className=''>
                 <Col md={8}></Col>
                 <Col md={4} className='d-flex justify-content-end px-4'>
-                    <input type='text' className='w-100 px-2 py-1 rounded searchInput' placeholder='Enter Po no'
-                        onChange={(e) => setQuery(e.target.value)} />
+                    <Input
+                        type='text'
+                        placeholder='Enter Po no'
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
                 </Col>
             </Row>
             <div className='mt-3' style={{ maxHeight: "65vh", overflowY: "auto", overflowX: "auto" }}>
                 <Table className='tableFixHead'>
                     <thead>
                         <tr>
-                            <th>No</th>
+                            <th>id</th>
                             <th>Po number</th>
                             <th>Assign Equipment id</th>
                             <th>Booking no</th>
@@ -77,7 +81,7 @@ const NexusInfor = ({ data }) => {
                         {currentRecords.map((x, index) => {
                             return (
                                 <tr key={index} className='tableData'>
-                                    <td>{index + 1}</td>
+                                    <td>{x.id}</td>
                                     <td>{x.po_number}</td>
                                     <td>{x.assign_equipment_id}</td>
                                     <td>{x.booking_number}</td>
@@ -101,7 +105,7 @@ const NexusInfor = ({ data }) => {
             <Row>
                 <Col md={4}></Col>
                 <Col md={8}>
-                    <div className='d-flex justify-content-end mt-5'>
+                    <div className='d-flex justify-content-end mt-4'>
                         <Pagination noOfPages={noOfPages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
                     </div>
                 </Col>

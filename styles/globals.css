@@ -96,3 +96,19 @@
   border: none;
   border-color: none;
 }
+.btn-custom{
+  background-color:rgb(66, 173, 211)!important;
+  color: white;
+  border-radius: 15px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn-custom:hover{
+  background-color:rgb(67, 157, 190)!important;
+  color: white;
+  border-radius: 15px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+}
