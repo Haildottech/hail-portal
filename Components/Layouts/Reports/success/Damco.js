@@ -92,7 +92,7 @@ const Damco = ({ data }) => {
                 <Table className='tableFixHead'>
                     <thead>
                         <tr>
-                            {/* <th>id</th> */}
+                            <th>id</th>
                             <th>Po number</th>
                             <th>Plan hod</th>
                             <th>Country</th>
@@ -110,7 +110,7 @@ const Damco = ({ data }) => {
                         {currentRecords.map((x, index) => {
                             return (
                                 <tr key={index} className='tableData'>
-                                    {/* <td>{x.id}</td> */}
+                                    <td>{x.id}</td>
                                     <td>{x.po_number}</td>
                                     <td>{moment(x.plan_hod).format("DD-MM-YYYY")}</td>
                                     <td>{x.country}</td>

@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Table } from "react-bootstrap"
 import moment from 'moment'
-import {Input } from 'antd';
+import {Input,Space } from 'antd';
 import Pagination from '@/Components/Shared/Pagination';
+import { CSVLink } from "react-csv"
 
 const NexusInfor = ({ data }) => {
 
     const [nexusData,setNexusData] = useState([])
+    //filter states
+    const [filterData,setFilterData] = useState([]);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    //search states
     const [searchData, setSearchData] = useState(data);
     const [query, setQuery] = useState("");
     const keys = ["po_number"];
-
+    //pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [recordsPerPage] = useState(50);
     const indexOfLast = currentPage * recordsPerPage;
@@ -21,6 +27,7 @@ const NexusInfor = ({ data }) => {
     useEffect(() => {
         setNexusData(data)
         setSearchData(data);
+        setFilterData(data)
     },[]);
 
     useEffect(() => {
@@ -29,6 +36,21 @@ const NexusInfor = ({ data }) => {
             setNexusData(search)
         }
     }, [query, searchData]);
+
+    useEffect(() => {
+        const filtered = filterDataByDateRange(filterData, startDate, endDate);
+        setNexusData(filtered);
+    }, [filterData, startDate, endDate]);
+
+    const filterDataByDateRange = (data, startDate, endDate) => {
+        if (!startDate || !endDate) {
+            return data;
+        }
+        return data.filter((item) => {
+            const timestamp = moment(item.timestamp);
+            return timestamp.isBetween(startDate, endDate, null, "[]");
+        });
+    };
 
     const handleSearch = (data) => {
         return data.filter((item) => {
@@ -46,14 +68,25 @@ const NexusInfor = ({ data }) => {
 
     return (
         <div>
-            <Row className=''>
-                <Col md={8}></Col>
-                <Col md={4} className='d-flex justify-content-end px-4'>
-                    <Input
-                        type='text'
-                        placeholder='Enter Po no'
-                        onChange={(e) => setQuery(e.target.value)}
-                    />
+             <Row className='my-2'>
+                <Col md={1}></Col>
+                <Col md={3} className='d-flex justify-content-end'>
+                    <Space>
+                        <label>From</label>
+                        <Input type='date' value={startDate} onChange={(e) => setStartDate(e.target.value)} placeholder='Select Start date' />
+                    </Space>
+                </Col>
+                <Col md={3} className='d-flex justify-content-end'>
+                    <Space>
+                        <label>To</label>
+                        <Input type='date' value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder='Select End date' />
+                    </Space>
+                </Col>
+                <Col md={3} className='d-flex justify-content-end'>
+                    <Input type='text' placeholder='Enter Po no' onChange={(e) => setQuery(e.target.value)}/>
+                </Col>
+                <Col md={2} className='d-flex justify-content-start'>
+                    <CSVLink data={data} className='px-4 py-1 border-none text-center btn-custom'>Download</CSVLink>
                 </Col>
             </Row>
             <div className='mt-3' style={{ maxHeight: "65vh", overflowY: "auto", overflowX: "auto" }}>
@@ -75,6 +108,7 @@ const NexusInfor = ({ data }) => {
                             <th>Seal no</th>
                             <th>Ctn qty</th>
                             <th>Units</th>
+                            <th>Created at</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,6 +130,7 @@ const NexusInfor = ({ data }) => {
                                     <td>{x.seal_number}</td>
                                     <td>{x.ctn_qty}</td>
                                     <td>{x.units}</td>
+                                    <td>{x.timestamp}</td>
                                 </tr>
                             )
                         })}

@@ -11,7 +11,7 @@ const DamcoFailReports = ({data}) => {
     const keys = ["po_number"];
     //pagination 
     const [currentPage, setCurrentPage] = useState(1);
-    const [recordsPerPage] = useState(20);
+    const [recordsPerPage] = useState(50);
     const indexOfLast = currentPage * recordsPerPage;
     const indexOfFirst = indexOfLast - recordsPerPage;
     const currentRecords = damcoData ? damcoData.slice(indexOfFirst, indexOfLast) : null;
