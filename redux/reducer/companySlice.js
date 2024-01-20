@@ -7,7 +7,7 @@ const initialState = {
 
 export const companySlice = createSlice({
   name: 'company',
-  initialState,
+  initialState:initialState,
   reducers: {
     addCompany: (state, action) => {
       state.value = action.payload

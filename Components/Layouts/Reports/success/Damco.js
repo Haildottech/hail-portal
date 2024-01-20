@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { Row, Col, Table } from "react-bootstrap";
 import moment from 'moment';
 import {Space, Input } from 'antd';
 import Pagination from '@/Components/Shared/Pagination';
 import { CSVLink } from "react-csv"
+import { damcoDataFormatter, initialState, recordsReducer } from './state';
 
 const Damco = ({ data }) => {
     const [damcoData, setDamcoData] = useState([]);
+    const set = (obj) => dispatch({ type: 'set', payload: obj });
+    const [state,dispatch] = useReducer(recordsReducer,initialState);
     //filter states
     const [filterData,setFilterData] = useState([]);
     const [startDate, setStartDate] = useState(null);
@@ -27,6 +30,7 @@ const Damco = ({ data }) => {
         setDamcoData(data)
         setSearchData(data);
         setFilterData(data)
+        damcoDataFormatter(data,set)
     }, []);
 
     useEffect(() => {
@@ -85,7 +89,7 @@ const Damco = ({ data }) => {
                     <Input type='text' placeholder='Enter Po no' onChange={(e) => setQuery(e.target.value)}/>
                 </Col>
                 <Col md={2} className='d-flex justify-content-start'>
-                    <CSVLink data={data} className='px-4 py-1 border-none text-center btn-custom'>Download</CSVLink>
+                   {state.damcoData.length > 0 && <CSVLink data={state.damcoData} className='px-4 py-1 border-none text-center btn-custom'>Download</CSVLink>}
                 </Col>
             </Row>
             <div className='mt-3' style={{ maxHeight: "65vh", overflowY: "auto", overflowX: "scroll" }}>

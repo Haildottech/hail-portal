@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import { Row, Col, Table } from "react-bootstrap"
 import moment from 'moment'
 import {Input,Space } from 'antd';
 import Pagination from '@/Components/Shared/Pagination';
 import { CSVLink } from "react-csv"
+import { initialState, recordsReducer,nexusDataFormatter } from './state';
 
 const NexusInfor = ({ data }) => {
 
     const [nexusData,setNexusData] = useState([])
+    const set = (obj) => dispatch({ type: 'set', payload: obj });
+    const [state,dispatch] = useReducer(recordsReducer,initialState);
     //filter states
     const [filterData,setFilterData] = useState([]);
     const [startDate, setStartDate] = useState(null);
@@ -25,9 +28,10 @@ const NexusInfor = ({ data }) => {
     const noOfPages = nexusData ? Math.ceil(nexusData.length / recordsPerPage) : null;
 
     useEffect(() => {
-        setNexusData(data)
+        setNexusData(data);
         setSearchData(data);
-        setFilterData(data)
+        setFilterData(data);
+        nexusDataFormatter(data,set)
     },[]);
 
     useEffect(() => {
@@ -86,7 +90,7 @@ const NexusInfor = ({ data }) => {
                     <Input type='text' placeholder='Enter Po no' onChange={(e) => setQuery(e.target.value)}/>
                 </Col>
                 <Col md={2} className='d-flex justify-content-start'>
-                    <CSVLink data={data} className='px-4 py-1 border-none text-center btn-custom'>Download</CSVLink>
+                    {state.nexusData.length > 0 && <CSVLink data={state.nexusData} className='px-4 py-1 border-none text-center btn-custom'>Download</CSVLink>}
                 </Col>
             </Row>
             <div className='mt-3' style={{ maxHeight: "65vh", overflowY: "auto", overflowX: "auto" }}>

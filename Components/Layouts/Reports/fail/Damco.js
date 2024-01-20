@@ -69,6 +69,7 @@ const DamcoFailReports = ({data}) => {
                             <th>Gross wieg.</th>
                             <th>Booking id</th>
                             <th>Status</th>
+                            <th>Created at</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,6 +87,7 @@ const DamcoFailReports = ({data}) => {
                                     <td>{x.gross_weight}</td>
                                     <td>{x.booking_id}</td>
                                     <td className='text-danger fw-bold'>{x.booking_status}</td>
+                                    <td>{moment(x.timestamp).format("DD-MM-YYYY")}</td>
                                 </tr>
                             )
                         })}
